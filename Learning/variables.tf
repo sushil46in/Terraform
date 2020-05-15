@@ -1,5 +1,16 @@
 variable "vname" {
   type = string
-  default = "learning"
+}
+variable "vlocation" {
+  type = string
+}
+variable "vaddressspace" {
+  type = string
+}
+variable "vsubnetprefix" {
+  type = string
+}
+variable "vservername" {
+  type = string
 }
 
