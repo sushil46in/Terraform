@@ -12,5 +12,5 @@ variable "vsubnetprefix" {
 }
 variable "vservername" {
   type = string
-}
+} 
 
