@@ -16,7 +16,7 @@ resource "azurerm_virtual_network" "web_server_vnet" {
   name                = "${var.web_server_resource_prefix}-vnet"
   location            = var.web_server_location
   resource_group_name = azurerm_resource_group.web_server_rg.name
-  address_space       = [var.web_server_address_space] 
+  address_space       = [var.web_server_address_space]
 }
 
 resource "azurerm_subnet" "web_server_subnet" {
@@ -27,22 +27,22 @@ resource "azurerm_subnet" "web_server_subnet" {
 }
 
 resource "azurerm_network_interface" "server_nic" {
-  name                = "${var.web_server_name}-${format("%02d",count.index)}-nic"  
+  name                = "${var.web_server_name}-${format("%02d", count.index)}-nic"
   location            = var.web_server_location
   resource_group_name = azurerm_resource_group.web_server_rg.name
   count               = var.web_server_count
 
   ip_configuration {
-     name                          = "${var.web_server_name}-ip"
-     subnet_id                     = azurerm_subnet.web_server_subnet.id
-     private_ip_address_allocation = "dynamic"
+    name                          = "${var.web_server_name}-ip"
+    subnet_id                     = azurerm_subnet.web_server_subnet.id
+    private_ip_address_allocation = "dynamic"
   }
 }
 
 resource "azurerm_network_security_group" "web_server_nsg" {
   name                = "${var.web_server_resource_prefix}-nsg"
-  location            = var.web_server_location  
-  resource_group_name = azurerm_resource_group.web_server_rg.name    
+  location            = var.web_server_location
+  resource_group_name = azurerm_resource_group.web_server_rg.name
 }
 
 resource "azurerm_network_security_rule" "web_server_nsg_rule_rdp" {
@@ -55,19 +55,19 @@ resource "azurerm_network_security_rule" "web_server_nsg_rule_rdp" {
   destination_port_range      = "3389"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.web_server_rg.name   
+  resource_group_name         = azurerm_resource_group.web_server_rg.name
   network_security_group_name = azurerm_network_security_group.web_server_nsg.name
 }
 
 resource "azurerm_subnet_network_security_group_association" "web_server_sag" {
-  network_security_group_id = azurerm_network_security_group.web_server_nsg.id  
+  network_security_group_id = azurerm_network_security_group.web_server_nsg.id
   subnet_id                 = azurerm_subnet.web_server_subnet.id
 }
 
 resource "azurerm_availability_set" "web_server_availability_set" {
   name                        = "${var.web_server_resource_prefix}-availability-set"
-  location                    = var.web_server_location  
+  location                    = var.web_server_location
   resource_group_name         = azurerm_resource_group.web_server_rg.name
-  managed                     = true 
+  managed                     = true
   platform_fault_domain_count = 2
 }
