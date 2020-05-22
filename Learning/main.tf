@@ -26,3 +26,48 @@ resource "azurerm_subnet" "server_subnet" {
   address_prefixes     = [var.server_subnet]
 }
 
+resource "azurerm_network_interface" "server_nic" {
+  name                = "${var.server_name}-${format("%02d", count.index)}-nic"
+  location            = var.server_location
+  resource_group_name = azurerm_resource_group.server_rg.name
+  count               = var.server_count
+
+  ip_configuration {
+    name                          = "${var.server_name}-ip"
+    subnet_id                     = azurerm_subnet.server_subnet.id
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+resource "azurerm_network_security_group" "server_nsg" {
+  name                = "${var.server_resource_prefix}-nsg"
+  location            = var.server_location
+  resource_group_name = azurerm_resource_group.server_rg.name
+}
+
+resource "azurerm_network_security_rule" "server_nsg_rule_ssh" {
+  name                        = "RDP Inbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.server_rg.name
+  network_security_group_name = azurerm_network_security_group.server_nsg.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "server_sag" {
+  network_security_group_id = azurerm_network_security_group.server_nsg.id
+  subnet_id                 = azurerm_subnet.server_subnet.id
+}
+
+resource "azurerm_availability_set" "server_availability_set" {
+  name                        = "${var.server_resource_prefix}-availability-set"
+  location                    = var.server_location
+  resource_group_name         = azurerm_resource_group.server_rg.name
+  managed                     = true
+  platform_fault_domain_count = 2
+}
