@@ -1,28 +1,28 @@
-variable "web_server_location" {
+variable "server_location" {
   type = string
 }
 
-variable "web_server_rg" {
+variable "server_rg" {
   type = string
 }
 
-variable "web_server_resource_prefix" {
+variable "server_resource_prefix" {
   type = string
 }
 
-variable "web_server_address_space" {
+variable "server_address_space" {
   type = string
 }
 
-variable "web_server_name" {
+variable "server_name" {
   type = string
 }
 
-variable "web_server_subnet" {
+variable "server_subnet" {
   type = string
 }
 
-variable "web_server_count" {
+variable "server_count" {
   type = number
 }
 
