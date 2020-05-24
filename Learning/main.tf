@@ -46,7 +46,7 @@ resource "azurerm_network_security_group" "server_nsg" {
 }
 
 resource "azurerm_network_security_rule" "server_nsg_rule_ssh" {
-  name                        = "Inbound"
+  name                        = "Inbound RDP"
   priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
@@ -63,48 +63,6 @@ resource "azurerm_subnet_network_security_group_association" "server_sag" {
   network_security_group_id = azurerm_network_security_group.server_nsg.id
   subnet_id                 = azurerm_subnet.server_subnet.id
 }
-resource "azurerm_public_ip" "publicip" {
-  name                         = "acceptanceTestPublicIp1"
-  location                     = "${azurestack_resource_group.test.location}"
-  resource_group_name          = "${azurestack_resource_group.test.name}"
-  public_ip_address_allocation = "static"
-
-  tags {
-    environment = "Production"
-  }
-}
-resource "azurerm_virtual_machine" "dockervm" {
-  name = "${var.server_name}-${format("%02d", count.index)}"
-  location= var.location
-  resource_group_name = azurerm_resource_group.server_rg.name
-  network_interface_ids = [azurerm_network_interface.main.id]
-  vm_size               = "Standard_DS1_v2"
-  delete_os_disk_on_termination = true
-  delete_data_disks_on_termination = true
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
-  }
-  storage_os_disk {
-    name              = "osdisk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-  }
-  os_profile {
-    computer_name  = azurerm_virtual_machine.dockervm.name
-    admin_username = "sushil"
-    admin_password = "Virgin123123"
-  }
-
-}
-
-
-
-
-
 
 resource "azurerm_availability_set" "server_availability_set" {
   name                        = "${var.server_resource_prefix}-availability-set"
