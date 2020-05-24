@@ -7,6 +7,3 @@ server_address_space   = "1.0.0.0/22"
 server_name            = "svc"
 server_subnet          = "1.0.1.0/24"
 server_count           = 1
-aks_location        = "westeurope"
-aks_rg              = "aks-rg"
-aks_name            = "akscluster"

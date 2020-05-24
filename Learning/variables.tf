@@ -26,14 +26,3 @@ variable "server_count" {
   type = number
 }
 
-variable "aks_location" {
-  type = string
-}
-
-variable "aks_rg" {
-  type = string
-}
-
-variable "aks_name" {
-  type = string
-}
