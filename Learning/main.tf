@@ -12,6 +12,7 @@ resource "azurerm_resource_group" "server_rg" {
   location = var.server_location
 }
 
+
 resource "azurerm_virtual_network" "server_vnet" {
   name                = "${var.server_resource_prefix}-vnet"
   location            = var.server_location
