@@ -91,8 +91,9 @@ resource "azurerm_virtual_machine" "rancher_vm" {
         sku       = "18.04-LTS"
         version   = "latest"
     }
-    computer_name  = var.ranchervmname
-    admin_username = "rancheradmin"
-    admin_password = "Virgin123123"
-    
+    os_profile{
+        computer_name  = var.ranchervmname
+        admin_username = "rancheradmin"
+        admin_password = "Virgin123123"
+    }
 }
