@@ -76,41 +76,33 @@ resource "azurerm_network_interface_security_group_association" "rancher_asso" {
     network_security_group_id = azurerm_network_security_group.rancher_nsg.id
 }
 
-
-# Create (and display) an SSH key
-resource "tls_private_key" "rancher_ssh" {
-  algorithm = "RSA"
-  rsa_bits = 4096
-}
-output "tls_private_key" { value = "${tls_private_key.rancher_ssh.private_key_pem}" }
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "rancher_vm" {
-    name                  = var.ranchervm
+    name                  = var.ranchervmname
     location              = var.location
     resource_group_name   = azurerm_resource_group.management_rg.name
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
     size                  = "Standard_B2s"
 
-    os_disk {
+    storage_os_disk {
         name              = "rancherosdisk"
         caching           = "ReadWrite"
         storage_account_type = "Premium_LRS"
     }
 
-    source_image_reference {
+    storage_image_reference {
         publisher = "Canonical"
         offer     = "UbuntuServer"
-        sku       = "18.04.0-LTS"
+        sku       = "18.04-LTS"
         version   = "latest"
     }
 
-    computer_name  = var.ranchervm
-    admin_username = "azureuser"
-    disable_password_authentication = true
-        
-    admin_ssh_key {
-        username       = "azureuser"
-        public_key     = tls_private_key.rancher_ssh.public_key_openssh
-    }
+    os_profile {
+    computer_name  = var.ranchervmname
+    admin_username = "rancheradmin"
+    admin_password = "Virgin123123"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
 }

@@ -26,6 +26,6 @@ variable "ranchernic" {
   type = string
 }
 
-variable "ranchervm" {
+variable "ranchervmname" {
   type = string
 }
