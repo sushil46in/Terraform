@@ -20,15 +20,15 @@ resource "azurerm_virtual_network" "management_vnet" {
     location            = var.location
     resource_group_name = azurerm_resource_group.management_rg.name
 }
-/*
+
 # Create subnet
-resource "azurerm_subnet" "myterraformsubnet" {
-    name                 = "mySubnet"
-    resource_group_name  = azurerm_resource_group.myterraformgroup.name
-    virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
+resource "azurerm_subnet" "management_subnet" {
+    name                 = var.subnet
+    resource_group_name  = azurerm_resource_group.management_rg.name
+    virtual_network_name = azurerm_virtual_network.management_vnet.name
     address_prefixes       = ["10.0.1.0/24"]
 }
-
+/*
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP"

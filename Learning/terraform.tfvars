@@ -3,3 +3,4 @@
 location        = "westeurope"
 rg              = "mgmt-rg"
 vnet            = "mgmt-vnet"
+subnet          = "mgmt-subnet"

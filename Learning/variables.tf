@@ -9,3 +9,7 @@ variable "rg" {
 variable "vnet" {
   type = string
 }
+
+variable "subnet" {
+  type = string
+}
