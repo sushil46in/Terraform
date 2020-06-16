@@ -81,9 +81,11 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     resource_group_name   = azurerm_resource_group.management_rg.name
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
     size                  = "Standard_B2s"
-    os_disk {
+    storage_os_disk {
+        name              = "rancherosdisk"
         caching           = "ReadWrite"
-        storage_account_type = "Standard_LRS"
+        create_option     = "FromImage"
+        managed_disk_type = "Standard_LRS"
     }
     storage_image_reference {
         publisher = "Canonical"
