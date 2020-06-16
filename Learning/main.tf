@@ -97,12 +97,8 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         version   = "latest"
     }
 
-    os_profile {
     computer_name  = var.ranchervmname
     admin_username = "rancheradmin"
     admin_password = "Virgin123123"
-  }
-  os_profile_linux_config {
     disable_password_authentication = false
-  }
 }
