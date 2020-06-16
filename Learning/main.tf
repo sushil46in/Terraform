@@ -76,24 +76,24 @@ resource "azurerm_network_interface_security_group_association" "rancher_asso" {
     network_security_group_id = azurerm_network_security_group.rancher_nsg.id
 }
 
-/*
+
 # Create (and display) an SSH key
-resource "tls_private_key" "example_ssh" {
+resource "tls_private_key" "rancher_ssh" {
   algorithm = "RSA"
   rsa_bits = 4096
 }
-output "tls_private_key" { value = "${tls_private_key.example_ssh.private_key_pem}" }
+output "tls_private_key" { value = "${tls_private_key.rancher_ssh.private_key_pem}" }
 
 # Create virtual machine
-resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "myVM"
-    location              = "eastus"
-    resource_group_name   = azurerm_resource_group.myterraformgroup.name
-    network_interface_ids = [azurerm_network_interface.myterraformnic.id]
-    size                  = "Standard_DS1_v2"
+resource "azurerm_linux_virtual_machine" "rancher_vm" {
+    name                  = var.ranchervm
+    location              = var.location
+    resource_group_name   = azurerm_resource_group.management_rg.name
+    network_interface_ids = [azurerm_network_interface.rancher_nic.id]
+    size                  = "Standard_B2s"
 
     os_disk {
-        name              = "myOsDisk"
+        name              = "rancherosdisk"
         caching           = "ReadWrite"
         storage_account_type = "Premium_LRS"
     }
@@ -101,11 +101,11 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     source_image_reference {
         publisher = "Canonical"
         offer     = "UbuntuServer"
-        sku       = "16.04.0-LTS"
+        sku       = "18.04.0-LTS"
         version   = "latest"
     }
 
-    computer_name  = "myvm"
+    computer_name  = var.ranchervm
     admin_username = "azureuser"
     disable_password_authentication = true
         
@@ -113,14 +113,4 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
         username       = "azureuser"
         public_key     = tls_private_key.example_ssh.public_key_openssh
     }
-
-    boot_diagnostics {
-        storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
-    }
-
-    tags = {
-        environment = "Terraform Demo"
-    }
 }
-
-*/

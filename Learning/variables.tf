@@ -25,3 +25,7 @@ variable "ranchernsg" {
 variable "ranchernic" {
   type = string
 }
+
+variable "ranchervm" {
+  type = string
+}
