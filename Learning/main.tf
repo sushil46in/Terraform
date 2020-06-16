@@ -75,7 +75,7 @@ resource "azurerm_network_interface_security_group_association" "rancher_asso" {
 }
 
 # Create virtual machine
-resource "azurerm_linux_virtual_machine" "rancher_vm" {
+resource "azurerm_virtual_machine" "rancher_vm" {
     name                  = var.ranchervmname
     location              = var.location
     resource_group_name   = azurerm_resource_group.management_rg.name
