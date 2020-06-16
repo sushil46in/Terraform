@@ -7,61 +7,8 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "server_rg" {
-  name     = var.server_rg
-  location = var.server_location
-}
-
-
-resource "azurerm_virtual_network" "server_vnet" {
-  name                = "${var.server_resource_prefix}-vnet"
-  location            = var.server_location
-  resource_group_name = azurerm_resource_group.server_rg.name
-  address_space       = [var.server_address_space]
-}
-
-resource "azurerm_subnet" "server_subnet" {
-  name                 = "${var.server_resource_prefix}-subnet"
-  resource_group_name  = azurerm_resource_group.server_rg.name
-  virtual_network_name = azurerm_virtual_network.server_vnet.name
-  address_prefixes     = [var.server_subnet]
-}
-
-resource "azurerm_network_interface" "server_nic" {
-  name                = "${var.server_name}-${format("%02d", count.index)}-nic"
-  location            = var.server_location
-  resource_group_name = azurerm_resource_group.server_rg.name
-  count               = var.server_count
-
-  ip_configuration {
-    name                          = "${var.server_name}-ip"
-    subnet_id                     = azurerm_subnet.server_subnet.id
-    private_ip_address_allocation = "dynamic"
-  }
-}
-
-resource "azurerm_network_security_group" "server_nsg" {
-  name                = "${var.server_resource_prefix}-nsg"
-  location            = var.server_location
-  resource_group_name = azurerm_resource_group.server_rg.name
-}
-
-resource "azurerm_network_security_rule" "server_nsg_rule_ssh" {
-  name                        = "Inbound"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.server_rg.name
-  network_security_group_name = azurerm_network_security_group.server_nsg.name
-}
-
-resource "azurerm_subnet_network_security_group_association" "server_sag" {
-  network_security_group_id = azurerm_network_security_group.server_nsg.id
-  subnet_id                 = azurerm_subnet.server_subnet.id
+resource "azurerm_resource_group" "rancher_rg" {
+  name     = var.rg
+  location = var.location
 }
 

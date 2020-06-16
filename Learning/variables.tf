@@ -1,28 +1,9 @@
-variable "server_location" {
+variable "location" {
   type = string
 }
 
-variable "server_rg" {
+variable "rg" {
   type = string
 }
 
-variable "server_resource_prefix" {
-  type = string
-}
-
-variable "server_address_space" {
-  type = string
-}
-
-variable "server_name" {
-  type = string
-}
-
-variable "server_subnet" {
-  type = string
-}
-
-variable "server_count" {
-  type = number
-}
 
