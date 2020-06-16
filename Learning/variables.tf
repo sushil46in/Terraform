@@ -13,3 +13,15 @@ variable "vnet" {
 variable "subnet" {
   type = string
 }
+
+variable "rancherpublicip" {
+  type = string
+}
+
+variable "ranchernsg" {
+  type = string
+}
+
+variable "ranchernic" {
+  type = string
+}
