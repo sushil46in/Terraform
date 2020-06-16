@@ -73,7 +73,7 @@ resource "azurerm_network_interface_security_group_association" "rancher_asso" {
     network_interface_id      = azurerm_network_interface.rancher_nic.id
     network_security_group_id = azurerm_network_security_group.rancher_nsg.id
 }
-/*
+
 # Create virtual machine
 resource "azurerm_virtual_machine" "rancher_vm" {
     name                  = var.ranchervmname
@@ -94,5 +94,5 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     computer_name  = var.ranchervmname
     admin_username = "rancheradmin"
     admin_password = "Virgin123123"
+    
 }
-*/
