@@ -42,7 +42,6 @@ resource "azurerm_network_security_group" "rancher_nsg" {
     name                = var.ranchernsg
     location            = var.location
     resource_group_name = azurerm_resource_group.management_rg.name
-    
     security_rule {
         name                       = "Inbound"
         priority                   = 100
@@ -61,7 +60,6 @@ resource "azurerm_network_interface" "rancher_nic" {
     name                      = var.ranchernic
     location                  = var.location
     resource_group_name       = azurerm_resource_group.management_rg.name
-
     ip_configuration {
         name                          = "ranchernicconfig"
         subnet_id                     = azurerm_subnet.management_subnet.id
@@ -83,19 +81,16 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     resource_group_name   = azurerm_resource_group.management_rg.name
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
     size                  = "Standard_B2s"
-
     os_disk {
         caching           = "ReadWrite"
         storage_account_type = "Standard_LRS"
     }
-
     storage_image_reference {
         publisher = "Canonical"
         offer     = "UbuntuServer"
         sku       = "18.04-LTS"
         version   = "latest"
     }
-
     computer_name  = var.ranchervmname
     admin_username = "rancheradmin"
     admin_password = "Virgin123123"
