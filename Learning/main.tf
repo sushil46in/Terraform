@@ -80,7 +80,7 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     location              = var.location
     resource_group_name   = azurerm_resource_group.management_rg.name
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
-    size                  = "Standard_B2s"
+    vm_size                  = "Standard_B2s"
     storage_os_disk {
         name              = "rancherosdisk"
         caching           = "ReadWrite"
