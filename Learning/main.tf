@@ -84,10 +84,9 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
     size                  = "Standard_B2s"
 
-    storage_os_disk {
-        name              = "rancherosdisk"
+    os_disk {
         caching           = "ReadWrite"
-        storage_account_type = "Premium_LRS"
+        storage_account_type = "Standard_LRS"
     }
 
     storage_image_reference {
@@ -100,5 +99,4 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     computer_name  = var.ranchervmname
     admin_username = "rancheradmin"
     admin_password = "Virgin123123"
-    disable_password_authentication = false
 }
