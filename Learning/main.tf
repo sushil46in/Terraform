@@ -103,7 +103,7 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         version   = "latest"
     }
     output "public_ip_address" {
-        value = data.azurerm_public_ip.example.ip_address
+        value = data.azurerm_public_ip.rancher_ip.ip_address
     }
     provisioner "remote-exec" {
         connection {
