@@ -100,5 +100,13 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     }
     os_profile_linux_config {
     disable_password_authentication = false
-  }
+    }
+    provisioner "remote-exec" {
+        inline = [
+        "curl -fsSL get.docker.com -o get-docker.sh"
+        "chmod +x get-docker.sh"
+        "sudo ./get-docker.sh"
+        "sudo usermod -aG docker $USER"
+        ]
+    }
 }
