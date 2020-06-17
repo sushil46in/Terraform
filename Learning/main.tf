@@ -104,4 +104,12 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         sku       = "18.04-LTS"
         version   = "latest"
     }
+    provisioner "remote-exec" {
+        inline = [
+            "curl -fsSL get.docker.com -o get-docker.sh",
+            "chmod +x get-docker.sh",
+            "sudo ./get-docker.sh",
+            "sudo usermod -aG docker $USER"
+        ]
+    }
 }
