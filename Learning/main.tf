@@ -74,6 +74,14 @@ resource "azurerm_network_interface_security_group_association" "rancher_asso" {
     network_security_group_id = azurerm_network_security_group.rancher_nsg.id
 }
 
+# Create (and display) an SSH key
+resource "tls_private_key" "mgmt_ssh" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
+output "tls_private_key" { value = "tls_private_key.mgmt_ssh.private_key_pem" }
+
 # Create virtual machine
 resource "azurerm_virtual_machine" "rancher_vm" {
     name                  = var.ranchervmname
@@ -96,9 +104,12 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     os_profile{
         computer_name  = var.ranchervmname
         admin_username = "rancheradmin"
-        admin_password = "Virgin123123"
     }
     os_profile_linux_config {
-    disable_password_authentication = false
+    disable_password_authentication = true
+    }
+    admin_ssh_key {
+        username       = "rancheradmin"
+        public_key     = tls_private_key.mgmt_ssh.public_key_openssh
     }
 }
