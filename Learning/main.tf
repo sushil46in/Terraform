@@ -89,11 +89,8 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     resource_group_name   = azurerm_resource_group.management_rg.name
     size                = "Standard_B2s"
     admin_username      = "rancheradmin"
+    admin_password      = "Virgin123123"
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
-    admin_ssh_key {
-        username   = "rancheradmin"
-        public_key = tls_private_key.mgmt_ssh.public_key_openssh
-    }
     os_disk {
         caching              = "ReadWrite"
         storage_account_type = "Standard_LRS"
@@ -104,7 +101,18 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         sku       = "18.04-LTS"
         version   = "latest"
     }
-    provisioner "local-exec" {
-        command = "curl -fsSL get.docker.com -o get-docker.sh"
+    provisioner "remote-exec" {
+        connection {
+            type     = "ssh"
+            user     = "rancheradmin"
+            password = "Virgin123123"
+            host     = azurerm_public_ip.rancher_ip.id
+        }
+        inline = [
+            "curl -fsSL get.docker.com -o get-docker.sh",
+            "chmod +x get-docker.sh",
+            "sudo ./get-docker.sh",
+            "sudo usermod -aG docker $USER"
+        ]
     }
 }
