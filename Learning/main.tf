@@ -102,12 +102,15 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         sku       = "18.04-LTS"
         version   = "latest"
     }
+    output "public_ip_address" {
+        value = data.azurerm_public_ip.example.ip_address
+    }
     provisioner "remote-exec" {
         connection {
             type     = "ssh"
             user     = "rancheradmin"
             password = "Virgin123123"
-            host     = azurerm_public_ip.rancher_ip.ip_address
+            host     = public_ip_address.value
         }
         inline = [
             "curl -fsSL get.docker.com -o get-docker.sh",
