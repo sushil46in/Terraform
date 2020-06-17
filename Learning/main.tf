@@ -90,6 +90,7 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     size                = "Standard_B2s"
     admin_username      = "rancheradmin"
     admin_password      = "Virgin123123"
+    disable_password_authentication = false
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
     os_disk {
         caching              = "ReadWrite"
