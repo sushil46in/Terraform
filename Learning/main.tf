@@ -105,11 +105,9 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         version   = "latest"
     }
     provisioner "local-exec" {
-        command = [
-            "curl -fsSL get.docker.com -o get-docker.sh",
-            "chmod +x get-docker.sh",
-            "sudo ./get-docker.sh",
-            "sudo usermod -aG docker $USER"
-        ]
+        command = "curl -fsSL get.docker.com -o get-docker.sh"
+        command = "chmod +x get-docker.sh",
+        command = "sudo ./get-docker.sh",
+        command = "sudo usermod -aG docker $USER"
     }
 }
