@@ -109,5 +109,5 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
 
 data "azurerm_public_ip" "rancher_ip" {
   name                = azurerm_public_ip.rancher_ip.name
-  resource_group_name = azurerm_virtual_machine.rancher_vm.resource_group_name
+  resource_group_name = azurerm_linux_virtual_machine.rancher_vm.resource_group_name
 }
