@@ -107,9 +107,6 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     }
     os_profile_linux_config {
     disable_password_authentication = true
-    }
-    admin_ssh_key {
-        username       = "rancheradmin"
-        public_key     = tls_private_key.mgmt_ssh.public_key_openssh
+    ssh_key     = tls_private_key.mgmt_ssh.public_key_openssh
     }
 }
