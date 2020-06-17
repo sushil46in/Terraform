@@ -74,14 +74,6 @@ resource "azurerm_network_interface_security_group_association" "rancher_asso" {
     network_security_group_id = azurerm_network_security_group.rancher_nsg.id
 }
 
-# Create (and display) an SSH key
-resource "tls_private_key" "mgmt_ssh" {
-  algorithm = "RSA"
-  rsa_bits = 4096
-}
-
-output "tls_private_key" { value = "tls_private_key.mgmt_ssh.private_key_pem" }
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "rancher_vm" {
     name                  = var.ranchervmname
@@ -102,22 +94,4 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         sku       = "18.04-LTS"
         version   = "latest"
     }
-    provisioner "remote-exec" {
-        connection {
-            type     = "ssh"
-            user     = "rancheradmin"
-            password = "Virgin123123"
-            host     = public_ip_address.value
-        }
-        inline = [
-            "curl -fsSL get.docker.com -o get-docker.sh",
-            "chmod +x get-docker.sh",
-            "sudo ./get-docker.sh",
-            "sudo usermod -aG docker $USER"
-        ]
-    }
 }
-
-output "public_ip_address" {
-        value = data.azurerm_public_ip.rancher_ip.ip_address
-    }
