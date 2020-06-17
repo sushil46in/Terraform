@@ -99,7 +99,7 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         type     = "ssh"
         user     = "rancheradmin"
         password = "Virgin123123"
-        host     = "self.public_ip"
+        host     = self.public_ip #data.azurerm_public_ip.rancher_ip.ip_address
     }
     inline = [
         "ifconfig"
