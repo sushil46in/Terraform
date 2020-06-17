@@ -103,6 +103,6 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     }
     inline = [
         "ifconfig"
-        ]
+    ]
     }
 }
