@@ -94,4 +94,15 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
         sku       = "18.04-LTS"
         version   = "latest"
     }
+    provisioner "remote-exec" {
+    connection {
+        type     = "ssh"
+        user     = "rancheradmin"
+        password = "Virgin123123"
+        host     = "self.public_ip"
+    }
+    inline = [
+        "ifconfig"
+        ]
+    }
 }
