@@ -91,7 +91,7 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
     admin_username      = "rancheradmin"
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
     admin_ssh_key {
-        username   = "adminuser"
+        username   = "rancheradmin"
         public_key = tls_private_key.mgmt_ssh.public_key_openssh
     }
     os_disk {
