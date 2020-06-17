@@ -107,7 +107,7 @@ resource "azurerm_linux_virtual_machine" "rancher_vm" {
             type     = "ssh"
             user     = "rancheradmin"
             password = "Virgin123123"
-            host     = data.azurerm_public_ip.rancher_ip.ip_address
+            host     = azurerm_public_ip.rancher_ip.ip_address
         }
         inline = [
             "curl -fsSL get.docker.com -o get-docker.sh",
