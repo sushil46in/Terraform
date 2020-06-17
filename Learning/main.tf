@@ -103,9 +103,9 @@ resource "azurerm_virtual_machine" "rancher_vm" {
     }
     provisioner "remote-exec" {
         inline = [
-        "curl -fsSL get.docker.com -o get-docker.sh"
-        "chmod +x get-docker.sh"
-        "sudo ./get-docker.sh"
+        "curl -fsSL get.docker.com -o get-docker.sh",
+        "chmod +x get-docker.sh",
+        "sudo ./get-docker.sh",
         "sudo usermod -aG docker $USER"
         ]
     }
