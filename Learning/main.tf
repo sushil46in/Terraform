@@ -83,30 +83,25 @@ resource "tls_private_key" "mgmt_ssh" {
 output "tls_private_key" { value = "tls_private_key.mgmt_ssh.private_key_pem" }
 
 # Create virtual machine
-resource "azurerm_virtual_machine" "rancher_vm" {
+resource "azurerm_linux_virtual_machine" "rancher_vm" {
     name                  = var.ranchervmname
     location              = var.location
     resource_group_name   = azurerm_resource_group.management_rg.name
+    size                = "Standard_B2s"
+    admin_username      = "rancheradmin"
     network_interface_ids = [azurerm_network_interface.rancher_nic.id]
-    vm_size                  = "Standard_B2s"
-    storage_os_disk {
-        name              = "rancherosdisk"
-        caching           = "ReadWrite"
-        create_option     = "FromImage"
-        managed_disk_type = "Standard_LRS"
+    admin_ssh_key {
+        username   = "adminuser"
+        public_key = tls_private_key.mgmt_ssh.public_key_openssh
     }
-    storage_image_reference {
+    os_disk {
+        caching              = "ReadWrite"
+        storage_account_type = "Standard_LRS"
+    }
+    source_image_reference {
         publisher = "Canonical"
         offer     = "UbuntuServer"
         sku       = "18.04-LTS"
         version   = "latest"
-    }
-    os_profile{
-        computer_name  = var.ranchervmname
-        admin_username = "rancheradmin"
-    }
-    os_profile_linux_config {
-    disable_password_authentication = true
-    ssh_key     = tls_private_key.mgmt_ssh.public_key_openssh
     }
 }
